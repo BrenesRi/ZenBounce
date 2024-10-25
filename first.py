@@ -8,6 +8,10 @@ pygame.init()
 resX, resY = 108 * 4, 192 * 4  # Establece el tamaño actual
 screen = pygame.display.set_mode((resX, resY))
 
+# Cargar música
+pygame.mixer.music.load("mysong.mp3")  # Asegúrate de que el archivo esté en la misma carpeta
+pygame.mixer.music.set_volume(1)  # Ajusta el volumen inicial si es necesario
+
 # Posición y radio del círculo principal
 circle_pos = (resX // 2, resY // 2)
 circle_radius = resX / 2.1
@@ -42,6 +46,10 @@ for _ in range(num_stars):
 # Rastro de la bola
 trail = []
 trail_length = 10  # Longitud del rastro
+
+# Variables para controlar la música
+collision_timer = 0  # Temporizador de colisión
+playing = False  # Indica si la música está en reproducción
 
 # Función para obtener un color basado en el tiempo
 def get_ball_color():
@@ -94,6 +102,11 @@ while True:
         
         # Cambiar el color del círculo principal al color de la bola en colisión
         main_circle_color = ball_color
+        
+        # Reproducir la música desde el principio si no está sonando
+        pygame.mixer.music.stop()  # Detener la música
+        pygame.mixer.music.play()  # Reproducir la música desde el principio
+        playing = True
 
     # Dibuja el círculo principal con el color actualizado
     pygame.draw.circle(screen, main_circle_color, circle_pos, circle_radius, circle_width)
@@ -123,5 +136,6 @@ while True:
     pygame.draw.circle(screen, (255, 255, 255), (int(ball_pos[0]), int(ball_pos[1])), ball_radius + 3)  # Borde blanco
     pygame.draw.circle(screen, ball_color, (int(ball_pos[0]), int(ball_pos[1])), ball_radius)  # Bola con color variable
 
+    # Actualiza la pantalla
     pygame.display.flip()
-    pygame.time.delay(20)
+    pygame.time.delay(20)  # Controla la velocidad del bucle
